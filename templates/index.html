@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal File Viewer</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+
+    <div id="primary">
+        <div id="navigation">
+            <div id="navigationTopTag">
+                <p id="LocalAccount">Local account</p>
+                <!-- <button><img src="{{ url_for('static', filename='settings.png') }}" alt="Conversation info button"></button> -->
+            </div>
+
+
+            <div id="conversations">
+                {% for conversation in conversationData.keys() %}
+
+
+                    <a class="conversationTab" href="/{{ conversation }}">
+                        <p class="conversationName">{{ conversationData[conversation]["name"] }}</p>
+                        <p class="conversationLastActive">{{ conversationData[conversation]["last_active"] }}</p>
+                    </a>
+                    
+                {% endfor %}
+            </div>
+            
+        </div>
+
+        <div id="main">
+        
+            {% for message in conversationData[activeConversation]["messages"].values() %}
+                
+                <div class="messageBar">
+                    {% if message["direction"] == "outgoing" %}
+                        <div class="barFiller"></div>
+                    {% endif %}
+
+                    
+
+                    <div class="messageBox">
+
+                        {% if message["hasAttachment"] == 1 %}
+
+                            {% if message["attachment"]["type"] == "image" %}
+
+                                <img src="{{ url_for('loadMedia', path=message['attachment']['path']) }}" alt="Sent image" style="height: 500px;">
+
+                            {% endif %}
+
+                            {% if message["attachment"]["type"] == "audio" %}
+
+                                <audio controls style="margin:10px;">
+                                    <source src="{{ url_for('loadMedia', path=message['attachment']['path']) }}" type="{{ message['attachment']['contentType'] }}">
+                                </audio>
+
+                            {% endif %}
+
+                        {% endif %}
+                        {% if message["body"] %}
+                            <p class="messageBody">{{ message["body"] }}</p>
+                        {% endif %}
+
+                        <p style="font-size: 0.9rem;">Sent at: {{ message["sent_at"] }}</p>
+                    </div>
+
+                    {% if message["direction"] == "incoming" %}
+                        <div class="barFiller"></div>
+                    {% endif %}
+                </div>
+                
+
+                
+
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
