@@ -1,0 +1,18 @@
+#!/bin/bash
+
+sudo apt update > /dev/null
+sudo apt -y upgrade > /dev/null
+
+sudo apt install -y build-essential manpages-dev libssl-dev python3 python3-pip git > /dev/null
+
+sudo pip install flask
+
+
+#Compile sqlcipher 4
+git clone https://github.com/sqlcipher/sqlcipher.git
+
+
+cd sqlcipher
+./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" LDFLAGS="-lcrypto"
+make
+

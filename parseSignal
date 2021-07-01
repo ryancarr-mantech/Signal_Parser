@@ -1,0 +1,17 @@
+#!/bin/bash
+
+export SIGNAL_VERSION="4"
+export TARGET_FOLDER="Signal"
+
+
+while getopts v:f: flag
+do
+    case "${flag}" in
+        v) export SIGNAL_VERSION=${OPTARG};;
+        f) export TARGET_FOLDER=${OPTARG};;
+    esac
+done
+
+echo "Starting with "${SIGNAL_VERSION}
+
+flask run

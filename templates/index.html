@@ -21,8 +21,12 @@
             <div id="conversations">
                 {% for conversation in conversationData.keys() %}
 
-
-                    <a class="conversationTab" href="/{{ conversation }}">
+                    {% if conversation == activeConversation %} 
+                        <a class="conversationTab" href="/{{ conversation }}" style="background-color: rgb(170, 170, 170);">
+                    {% else %}
+                        <a class="conversationTab" href="/{{ conversation }}" >
+                    {% endif %}
+                    
                         <p class="conversationName">{{ conversationData[conversation]["name"] }}</p>
                         <p class="conversationLastActive">{{ conversationData[conversation]["last_active"] }}</p>
                     </a>
